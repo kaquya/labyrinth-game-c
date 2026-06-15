@@ -2,13 +2,13 @@
 
 ## 1. Management Summary
 
-In dieser Praxisarbeit wurde ein textbasiertes Labyrinth-Spiel in der Programmiersprache C entwickelt. Das Spiel wird in der Konsole gespielt. Der Spieler wird mit `P`, der Schatz mit `T` und Hindernisse mit `O` dargestellt.
+In dieser Praxisarbeit wurde ein textbasiertes Labyrinth-Spiel in der Programmiersprache C entwickelt. Das Spiel läuft in der Konsole und verwendet ein zweidimensionales Spielfeld mit mindestens 10 x 10 Feldern.
 
-Das Ziel des Spiels ist es, den Schatz im Labyrinth zu finden. Dafür bewegt sich der Spieler mit den Tasten `W`, `A`, `S` und `D` durch ein zufällig generiertes Spielfeld. Bewegungen ausserhalb des Spielfelds oder auf Hindernisse werden verhindert.
+Der Spieler wird mit `P`, der Schatz mit `T` und Hindernisse mit `O` dargestellt. Ziel des Spiels ist es, den Schatz im Labyrinth zu finden. Der Spieler bewegt sich mit den Tasten `W`, `A`, `S` und `D`. Ungültige Bewegungen, zum Beispiel gegen Hindernisse oder ausserhalb des Spielfelds, werden verhindert.
 
-Der Fokus der Arbeit lag auf der Anwendung von 2D-Arrays, Funktionen, Programmsteuerung, Benutzereingaben und einfacher Spiellogik.
+Der Fokus der Arbeit lag auf der Anwendung von Arrays, Funktionen, Programmsteuerung, Zufallszahlen, Benutzereingaben und einer einfachen modularen Programmstruktur.
 
-## 2. Anforderungen
+## 2. Anforderungen und Aufgabenstellung
 
 Das Spiel erfüllt folgende Anforderungen:
 
@@ -21,7 +21,9 @@ Das Spiel erfüllt folgende Anforderungen:
 * keine Überlappung von Spieler, Schatz und Hindernissen
 * mindestens 10 % Hindernisse
 * Bewegung mit `W`, `A`, `S`, `D`
-* Blockierung ungültiger Bewegungen
+* ungültige Bewegungen führen zu keiner Positionsänderung
+* Bewegung ausserhalb des Spielfelds ist nicht erlaubt
+* Bewegung auf Hindernisse ist nicht erlaubt
 * Siegmeldung beim Finden des Schatzes
 * mindestens 5 Testszenarien
 
@@ -44,47 +46,117 @@ typedef struct {
 } Position;
 ```
 
-Dadurch werden Zeile und Spalte gemeinsam gespeichert. Das macht den Code lesbarer und vereinfacht die Übergabe von Positionen an Funktionen.
+Diese Struktur speichert Zeile und Spalte gemeinsam. Dadurch wird der Code lesbarer, da Positionen nicht als einzelne Variablen übergeben werden müssen.
+
+Die geplante Programmstruktur besteht aus mehreren Funktionen:
+
+* `initializeLabyrinth()` erstellt das leere Spielfeld.
+* `printLabyrinth()` gibt das Spielfeld aus.
+* `getRandomFreePosition()` sucht eine freie zufällige Position.
+* `placeGameObjects()` platziert Spieler, Schatz und Hindernisse.
+* `isValidMove()` prüft, ob eine Bewegung erlaubt ist.
+* `movePlayer()` bewegt den Spieler.
+* `hasPlayerWon()` prüft die Siegbedingung.
 
 ## 4. Implementierung
 
-Die Entwicklung wurde in mehreren Schritten umgesetzt.
+Die Entwicklung wurde bewusst in mehreren Schritten umgesetzt.
 
-Zuerst wurde das Git-Repository erstellt und eine saubere Projektstruktur vorbereitet. Danach wurde das Design dokumentiert, bevor mit dem eigentlichen Code begonnen wurde.
+Zuerst wurde das Git-Repository erstellt. Danach wurden `README.md`, `.gitignore`, `LICENSE` und die Projektordner angelegt. Anschliessend wurde das Design dokumentiert, bevor mit der eigentlichen Implementierung begonnen wurde.
 
-Anschliessend wurde das leere Spielfeld erstellt und in der Konsole ausgegeben. Danach wurden Spieler, Schatz und Hindernisse zufällig platziert.
+Als erster Programmschritt wurde das leere Spielfeld erstellt und in der Konsole ausgegeben. Danach wurden Spieler, Schatz und Hindernisse zufällig platziert. Dabei wurde darauf geachtet, dass sich die Objekte nicht überschneiden.
 
-Im nächsten Schritt wurde die Spielerbewegung mit `W`, `A`, `S` und `D` implementiert. Danach wurde geprüft, ob Bewegungen gültig sind. Bewegungen ausserhalb des Spielfelds oder auf Hindernisse werden blockiert.
+Im nächsten Schritt wurde die Bewegung des Spielers mit `W`, `A`, `S` und `D` umgesetzt. Danach wurde die Bewegungsprüfung ergänzt. Diese verhindert, dass der Spieler ausserhalb des Spielfelds oder auf ein Hindernis läuft.
 
-Zum Schluss wurde die Siegbedingung ergänzt. Das Spiel endet, sobald der Spieler den Schatz erreicht.
+Zum Schluss wurde die Siegbedingung implementiert. Sobald der Spieler die Position des Schatzes erreicht, wird eine Siegmeldung angezeigt und das Spiel beendet.
 
-## 5. Tests
+## 5. Test
 
 Es wurden fünf Testszenarien definiert:
 
 1. Spielfeld wird korrekt angezeigt
 2. Spieler bewegt sich auf ein freies Feld
-3. Bewegung auf Hindernis wird blockiert
+3. Bewegung auf ein Hindernis wird blockiert
 4. Bewegung ausserhalb des Spielfelds wird blockiert
 5. Schatz wird gefunden und das Spiel endet
 
-Die Tests sind in `docs/tests/testszenarien.md` dokumentiert.
+Die Tests sind in folgendem Dokument beschrieben:
+
+```txt
+docs/tests/testszenarien.md
+```
 
 ## 6. KI-Reflexion
 
-KI wurde zur Unterstützung bei der Strukturierung des Projekts, beim Formulieren der Dokumentation und beim Erstellen von Codevorschlägen verwendet.
+KI wurde zur Unterstützung bei der Projektstruktur, bei der Formulierung der Dokumentation und bei Codevorschlägen verwendet.
 
-Der Code wurde nicht blind übernommen. Die Vorschläge wurden schrittweise geprüft, angepasst und in einzelne Git-Branches aufgeteilt.
+Der Code wurde nicht blind übernommen. Die Vorschläge wurden schrittweise geprüft, angepasst und in einzelne Git-Branches aufgeteilt. Dadurch blieb die Entwicklung nachvollziehbar.
 
-Beispiel-Prompts:
+### Beispiel-Prompt 1
 
-1. „Hilf mir, eine Projektstruktur für ein C-Labyrinth-Spiel zu erstellen.“
-2. „Schreibe mir eine Funktion, um ein 10x10 Labyrinth in C auszugeben.“
+```txt
+Hilf mir, eine Projektstruktur für ein C-Labyrinth-Spiel zu erstellen.
+```
 
-Übernommen wurden vor allem Strukturvorschläge und Grundideen für Funktionen. Angepasst wurden Benennungen, Kommentare und die Reihenfolge der Entwicklung.
+Übernommen wurde die Grundidee einer sauberen Ordnerstruktur mit `src`, `docs`, `docs/design`, `docs/tests` und `docs/screenshots`.
+
+### Beispiel-Prompt 2
+
+```txt
+Schreibe mir eine Funktion, um ein 10x10 Labyrinth in C auszugeben.
+```
+
+Übernommen wurde die Grundidee einer Ausgabefunktion. Angepasst wurden die Namen, Kommentare und später die Anzeige mit Koordinaten.
+
+### Eigenleistung
+
+Selbst entschieden wurden die Entwicklungsreihenfolge, die Verwendung von Branches, die Benennung der Funktionen und die finale Struktur des Projekts.
+
+### Verworfene KI-Vorschläge
+
+Ein Vorschlag war, direkt mit dem vollständigen Code zu starten. Dieser Vorschlag wurde verworfen, weil zuerst Repository, Projektstruktur und Design erstellt werden sollten. Dadurch ist die Entwicklung besser nachvollziehbar.
 
 ## 7. Lessons Learned
 
-Ich habe gelernt, wie ein kleines C-Projekt strukturiert aufgebaut werden kann. Besonders wichtig waren dabei Funktionen, Arrays, Zufallszahlen und Benutzereingaben.
+Ich habe gelernt, wie ein kleines C-Projekt strukturiert aufgebaut werden kann. Besonders wichtig waren dabei Arrays, Funktionen, Zufallszahlen und Benutzereingaben.
 
 Ausserdem habe ich gelernt, wie Git-Branches genutzt werden können, um einzelne Entwicklungsschritte sauber voneinander zu trennen.
+
+## 8. Anhang
+
+### Projektstruktur
+
+```txt
+labyrinth-game-c
+├── docs
+│   ├── design
+│   ├── screenshots
+│   └── tests
+├── src
+│   └── main.c
+├── .gitignore
+├── LICENSE
+└── README.md
+```
+
+### Branches
+
+| Branch                         | Zweck                            |
+| ------------------------------ | -------------------------------- |
+| `feature/project-setup`        | Repository-Grundlagen            |
+| `feature/project-structure`    | Ordnerstruktur                   |
+| `feature/design-documentation` | Design und Planung               |
+| `feature/game-board`           | Spielfeld erstellen und anzeigen |
+| `feature/random-placement`     | Zufällige Platzierung            |
+| `feature/player-movement`      | Spielerbewegung                  |
+| `feature/win-condition`        | Siegbedingung                    |
+| `feature/tests`                | Testszenarien                    |
+| `feature/final-documentation`  | Dokumentation                    |
+
+### Verwendete Werkzeuge
+
+* Visual Studio Code
+* Git
+* GitHub
+* GCC Compiler
+* KI-Unterstützung

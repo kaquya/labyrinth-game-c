@@ -19,6 +19,7 @@ typedef struct {
 
 /*
  * Fills the labyrinth with empty fields.
+ * This creates the base board before any game objects are placed.
  */
 void initializeLabyrinth(char labyrinth[ROWS][COLS]) {
     for (int row = 0; row < ROWS; row++) {
@@ -30,14 +31,24 @@ void initializeLabyrinth(char labyrinth[ROWS][COLS]) {
 
 /*
  * Prints the current labyrinth to the console.
+ * This function is responsible only for output and does not change game logic.
  */
 void printLabyrinth(char labyrinth[ROWS][COLS]) {
+    printf("\n   ");
+
+    for (int col = 0; col < COLS; col++) {
+        printf("%d ", col);
+    }
+
     printf("\n");
 
     for (int row = 0; row < ROWS; row++) {
+        printf("%d  ", row);
+
         for (int col = 0; col < COLS; col++) {
             printf("%c ", labyrinth[row][col]);
         }
+
         printf("\n");
     }
 
@@ -45,8 +56,8 @@ void printLabyrinth(char labyrinth[ROWS][COLS]) {
 }
 
 /*
- * Returns a random position that is still empty.
- * This prevents player, treasure and obstacles from overlapping.
+ * Returns a random free position inside the labyrinth.
+ * A free position is a field that currently contains EMPTY.
  */
 Position getRandomFreePosition(char labyrinth[ROWS][COLS]) {
     Position position;
@@ -60,7 +71,8 @@ Position getRandomFreePosition(char labyrinth[ROWS][COLS]) {
 }
 
 /*
- * Places player, treasure and obstacles on random free fields.
+ * Places the player, treasure and obstacles randomly.
+ * The function makes sure that no objects overlap.
  */
 void placeGameObjects(char labyrinth[ROWS][COLS], Position *playerPosition, Position *treasurePosition) {
     *playerPosition = getRandomFreePosition(labyrinth);
@@ -76,8 +88,8 @@ void placeGameObjects(char labyrinth[ROWS][COLS], Position *playerPosition, Posi
 }
 
 /*
- * Checks whether the target field is inside the labyrinth
- * and not blocked by an obstacle.
+ * Checks whether a target field is valid.
+ * The player may not leave the board and may not move onto an obstacle.
  */
 int isValidMove(char labyrinth[ROWS][COLS], int newRow, int newCol) {
     if (newRow < 0 || newRow >= ROWS || newCol < 0 || newCol >= COLS) {
@@ -128,8 +140,17 @@ int movePlayer(char labyrinth[ROWS][COLS], Position *playerPosition, char input)
 }
 
 /*
- * Program entry point.
- * Creates the labyrinth and places all game objects randomly.
+ * Checks whether the player has reached the treasure.
+ * The game is won when player and treasure have the same position.
+ */
+int hasPlayerWon(Position playerPosition, Position treasurePosition) {
+    return playerPosition.row == treasurePosition.row &&
+           playerPosition.col == treasurePosition.col;
+}
+
+/*
+ * Main function of the game.
+ * It initializes the game, handles user input and controls the game loop.
  */
 int main(void) {
     char labyrinth[ROWS][COLS];
@@ -162,6 +183,12 @@ int main(void) {
 
             if (!moved) {
                 printf("Ungueltige Bewegung.\n");
+            }
+
+            if (hasPlayerWon(playerPosition, treasurePosition)) {
+                printLabyrinth(labyrinth);
+                printf("Glueckwunsch! Du hast den Schatz gefunden.\n");
+                gameRunning = 0;
             }
         }
     }
