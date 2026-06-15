@@ -85,44 +85,13 @@ Die Tests sind in folgendem Dokument beschrieben:
 ```txt
 docs/tests/testszenarien.md
 ```
-
-## 6. KI-Reflexion
-
-KI wurde zur Unterstützung bei der Projektstruktur, bei der Formulierung der Dokumentation und bei Codevorschlägen verwendet.
-
-Der Code wurde nicht blind übernommen. Die Vorschläge wurden schrittweise geprüft, angepasst und in einzelne Git-Branches aufgeteilt. Dadurch blieb die Entwicklung nachvollziehbar.
-
-### Beispiel-Prompt 1
-
-```txt
-Hilf mir, eine Projektstruktur für ein C-Labyrinth-Spiel zu erstellen.
-```
-
-Übernommen wurde die Grundidee einer sauberen Ordnerstruktur mit `src`, `docs`, `docs/design`, `docs/tests` und `docs/screenshots`.
-
-### Beispiel-Prompt 2
-
-```txt
-Schreibe mir eine Funktion, um ein 10x10 Labyrinth in C auszugeben.
-```
-
-Übernommen wurde die Grundidee einer Ausgabefunktion. Angepasst wurden die Namen, Kommentare und später die Anzeige mit Koordinaten.
-
-### Eigenleistung
-
-Selbst entschieden wurden die Entwicklungsreihenfolge, die Verwendung von Branches, die Benennung der Funktionen und die finale Struktur des Projekts.
-
-### Verworfene KI-Vorschläge
-
-Ein Vorschlag war, direkt mit dem vollständigen Code zu starten. Dieser Vorschlag wurde verworfen, weil zuerst Repository, Projektstruktur und Design erstellt werden sollten. Dadurch ist die Entwicklung besser nachvollziehbar.
-
-## 7. Lessons Learned
+## 6. Lessons Learned
 
 Ich habe gelernt, wie ein kleines C-Projekt strukturiert aufgebaut werden kann. Besonders wichtig waren dabei Arrays, Funktionen, Zufallszahlen und Benutzereingaben.
 
 Ausserdem habe ich gelernt, wie Git-Branches genutzt werden können, um einzelne Entwicklungsschritte sauber voneinander zu trennen.
 
-## 8. Anhang
+## 7. Anhang
 
 ### Projektstruktur
 
