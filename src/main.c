@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
 
 #define ROWS 10
 #define COLS 10
@@ -75,6 +76,58 @@ void placeGameObjects(char labyrinth[ROWS][COLS], Position *playerPosition, Posi
 }
 
 /*
+ * Checks whether the target field is inside the labyrinth
+ * and not blocked by an obstacle.
+ */
+int isValidMove(char labyrinth[ROWS][COLS], int newRow, int newCol) {
+    if (newRow < 0 || newRow >= ROWS || newCol < 0 || newCol >= COLS) {
+        return 0;
+    }
+
+    if (labyrinth[newRow][newCol] == OBSTACLE) {
+        return 0;
+    }
+
+    return 1;
+}
+
+/*
+ * Moves the player based on the entered command.
+ * W moves up, A moves left, S moves down and D moves right.
+ */
+int movePlayer(char labyrinth[ROWS][COLS], Position *playerPosition, char input) {
+    int newRow = playerPosition->row;
+    int newCol = playerPosition->col;
+
+    input = toupper(input);
+
+    if (input == 'W') {
+        newRow--;
+    } else if (input == 'A') {
+        newCol--;
+    } else if (input == 'S') {
+        newRow++;
+    } else if (input == 'D') {
+        newCol++;
+    } else {
+        return 0;
+    }
+
+    if (!isValidMove(labyrinth, newRow, newCol)) {
+        return 0;
+    }
+
+    labyrinth[playerPosition->row][playerPosition->col] = EMPTY;
+
+    playerPosition->row = newRow;
+    playerPosition->col = newCol;
+
+    labyrinth[playerPosition->row][playerPosition->col] = PLAYER;
+
+    return 1;
+}
+
+/*
  * Program entry point.
  * Creates the labyrinth and places all game objects randomly.
  */
@@ -82,6 +135,8 @@ int main(void) {
     char labyrinth[ROWS][COLS];
     Position playerPosition;
     Position treasurePosition;
+    char input;
+    int gameRunning = 1;
 
     srand(time(NULL));
 
@@ -89,7 +144,27 @@ int main(void) {
     placeGameObjects(labyrinth, &playerPosition, &treasurePosition);
 
     printf("Labyrinth-Spiel\n");
-    printLabyrinth(labyrinth);
+    printf("Steuerung: W = hoch, A = links, S = runter, D = rechts, Q = beenden\n");
+
+    while (gameRunning) {
+        printLabyrinth(labyrinth);
+
+        printf("Eingabe: ");
+        scanf(" %c", &input);
+
+        input = toupper(input);
+
+        if (input == 'Q') {
+            printf("Spiel wurde beendet.\n");
+            gameRunning = 0;
+        } else {
+            int moved = movePlayer(labyrinth, &playerPosition, input);
+
+            if (!moved) {
+                printf("Ungueltige Bewegung.\n");
+            }
+        }
+    }
 
     return 0;
 }
